@@ -1,33 +1,19 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Employee = () => {
-  const [employee, setEmployee] = useState([]);
-  const navigate = useNavigate()
+  // Sample employee data (replace with your actual data)
+  const [employee] = useState([
+    { id: 1, name: "John Doe", email: "test@example.com" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com" },
+    // Add more employees as needed
+  ]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/employee")
-      .then((result) => {
-        if (result.data.Status) {
-          setEmployee(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
   const handleDelete = (id) => {
-    axios.delete('http://localhost:3000/auth/delete_employee/'+id)
-    .then(result => {
-        if(result.data.Status) {
-            window.location.reload()
-        } else {
-            alert(result.data.Error)
-        }
-    })
-  } 
+    // Implement delete functionality as needed
+    console.log("Delete employee with id:", id);
+  };
+
   return (
     <div className="px-5 mt-3">
       <div className="d-flex justify-content-center">
@@ -47,7 +33,7 @@ const Employee = () => {
           </thead>
           <tbody>
             {employee.map((e) => (
-              <tr>
+              <tr key={e.id}>
                 <td>{e.name}</td>
                 <td>{e.email}</td>
                 <td>

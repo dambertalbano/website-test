@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,39 +9,45 @@ const AddTeacher = () => {
     category_id: "",
   });
   const [category, setCategory] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/category")
-      .then((result) => {
-        if (result.data.Status) {
-          setCategory(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
+    // Simulate fetching category data
+    const fetchCategory = () => {
+      // Mock category data
+      const mockCategory = [
+        { id: 1, name: "Category 1" },
+        { id: 2, name: "Category 2" },
+        { id: 3, name: "Category 3" },
+      ];
+      setCategory(mockCategory);
+    };
+
+    fetchCategory();
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const formData = new FormData();
-    formData.append('name', teacher.name);
-    formData.append('email', teacher.email);
-    formData.append('password', teacher.password);
-    formData.append('category_id', teacher.category_id);
+    e.preventDefault();
 
-    axios.post('http://localhost:3000/auth/add_teacher', formData)
-    .then(result => {
-        if(result.data.Status) {
-            navigate('/dashboard/teacher')
-        } else {
-            alert(result.data.Error)
-        }
-    })
-    .catch(err => console.log(err))
-  }
+    // Simulate adding teacher without making HTTP request
+    const fakeAddTeacher = () => {
+      // Check if all fields are filled
+      if (
+        teacher.name.trim() !== "" &&
+        teacher.email.trim() !== "" &&
+        teacher.password.trim() !== "" &&
+        teacher.category_id.trim() !== ""
+      ) {
+        // Simulate success by navigating to teacher page
+        navigate("/dashboard/teacher");
+      } else {
+        // Simulate error by showing an alert
+        alert("Please fill all fields");
+      }
+    };
+
+    fakeAddTeacher();
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
@@ -50,7 +55,7 @@ const AddTeacher = () => {
         <h3 className="text-center">Add Teacher</h3>
         <form className="row g-1" onSubmit={handleSubmit}>
           <div className="col-12">
-            <label for="inputName" className="form-label">
+            <label htmlFor="inputName" className="form-label">
               Name
             </label>
             <input
@@ -58,13 +63,14 @@ const AddTeacher = () => {
               className="form-control rounded-0"
               id="inputName"
               placeholder="Enter Name"
+              value={teacher.name}
               onChange={(e) =>
                 setTeacher({ ...teacher, name: e.target.value })
               }
             />
           </div>
           <div className="col-12">
-            <label for="inputEmail4" className="form-label">
+            <label htmlFor="inputEmail4" className="form-label">
               Email
             </label>
             <input
@@ -73,13 +79,14 @@ const AddTeacher = () => {
               id="inputEmail4"
               placeholder="Enter Email"
               autoComplete="off"
+              value={teacher.email}
               onChange={(e) =>
                 setTeacher({ ...teacher, email: e.target.value })
               }
             />
           </div>
           <div className="col-12">
-            <label for="inputPassword4" className="form-label">
+            <label htmlFor="inputPassword4" className="form-label">
               Password
             </label>
             <input
@@ -87,20 +94,31 @@ const AddTeacher = () => {
               className="form-control rounded-0"
               id="inputPassword4"
               placeholder="Enter Password"
+              value={teacher.password}
               onChange={(e) =>
                 setTeacher({ ...teacher, password: e.target.value })
               }
             />
           </div>
           <div className="col-12">
-            <label for="category" className="form-label">
+            <label htmlFor="category" className="form-label">
               Category
             </label>
-            <select name="category" id="category" className="form-select"
-                onChange={(e) => setTeacher({...teacher, category_id: e.target.value})}>
-              {category.map((c) => {
-                return <option value={c.id}>{c.name}</option>;
-              })}
+            <select
+              name="category"
+              id="category"
+              className="form-select"
+              value={teacher.category_id}
+              onChange={(e) =>
+                setTeacher({ ...teacher, category_id: e.target.value })
+              }
+            >
+              <option value="">Select Category</option>
+              {category.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-12">

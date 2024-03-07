@@ -1,53 +1,50 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 const Home = () => {
-  const [adminTotal, setAdminTotal] = useState(0)
-  const [employeeTotal, setemployeeTotal] = useState(0)
-  const [teacherTotal, setteacherTotal] = useState(0)
-  const [admins, setAdmins] = useState([])
+  const [adminTotal, setAdminTotal] = useState(0);
+  const [employeeTotal, setEmployeeTotal] = useState(0);
+  const [teacherTotal, setTeacherTotal] = useState(0);
+  const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
+    // Simulating fetching admin count
+    const adminCount = () => {
+      // Mock admin count
+      const mockAdminCount = 10;
+      setAdminTotal(mockAdminCount);
+    };
+
+    // Simulating fetching employee count
+    const employeeCount = () => {
+      // Mock employee count
+      const mockEmployeeCount = 20;
+      setEmployeeTotal(mockEmployeeCount);
+    };
+
+    // Simulating fetching teacher count
+    const teacherCount = () => {
+      // Mock teacher count
+      const mockTeacherCount = 15;
+      setTeacherTotal(mockTeacherCount);
+    };
+
+    // Simulating fetching admin records
+    const adminRecords = () => {
+      // Mock admin records
+      const mockAdmins = [
+        { id: 1, email: 'admin1@example.com' },
+        { id: 2, email: 'admin2@example.com' },
+        { id: 3, email: 'admin3@example.com' },
+      ];
+      setAdmins(mockAdmins);
+    };
+
     adminCount();
     employeeCount();
-    AdminRecords();
     teacherCount();
-  }, [])
+    adminRecords();
+  }, []);
 
-  const AdminRecords = () => {
-    axios.get('http://localhost:3000/auth/admin_records')
-    .then(result => {
-      if(result.data.Status) {
-        setAdmins(result.data.Result)
-      } else {
-         alert(result.data.Error)
-      }
-    })
-  }
-  const adminCount = () => {
-    axios.get('http://localhost:3000/auth/admin_count')
-    .then(result => {
-      if(result.data.Status) {
-        setAdminTotal(result.data.Result[0].admin)
-      }
-    })
-  }
-  const employeeCount = () => {
-    axios.get('http://localhost:3000/auth/employee_count')
-    .then(result => {
-      if(result.data.Status) {
-        setemployeeTotal(result.data.Result[0].employee)
-      }
-    })
-  }
-  const teacherCount = () => {
-    axios.get('http://localhost:3000/auth/teacher_count')
-    .then(result => {
-      if(result.data.Status) {
-        setteacherTotal(result.data.Result[0].teacher)
-      }
-    })
-  }
   return (
     <div>
       <div className='p-3 d-flex justify-content-around mt-3'>
@@ -92,28 +89,20 @@ const Home = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              admins.map(a => (
-                <tr>
-                  <td>{a.email}</td>
-                  <td>
-                  <button
-                    className="btn btn-info btn-sm me-2">
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-warning btn-sm" >
-                    Delete
-                  </button>
-                  </td>
-                </tr>
-              ))
-            }
+            {admins.map((a) => (
+              <tr key={a.id}>
+                <td>{a.email}</td>
+                <td>
+                  <button className='btn btn-info btn-sm me-2'>Edit</button>
+                  <button className='btn btn-warning btn-sm'>Delete</button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

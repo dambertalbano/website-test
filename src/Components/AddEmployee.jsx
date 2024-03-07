@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
@@ -9,40 +8,19 @@ const AddEmployee = () => {
     password: "",
     category_id: "",
   });
-  const [category, setCategory] = useState([]);
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/category")
-      .then((result) => {
-        if (result.data.Status) {
-          setCategory(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const [category] = useState([
+    { id: 1, name: "Category 1" },
+    { id: 2, name: "Category 2" },
+    { id: 3, name: "Category 3" },
+  ]);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const formData = new FormData();
-    formData.append('name', employee.name);
-    formData.append('email', employee.email);
-    formData.append('password', employee.password);
-    formData.append('category_id', employee.category_id);
-
-    axios.post('http://localhost:3000/auth/add_employee', formData)
-    .then(result => {
-        if(result.data.Status) {
-            navigate('/dashboard/employee')
-        } else {
-            alert(result.data.Error)
-        }
-    })
-    .catch(err => console.log(err))
-  }
+    e.preventDefault();
+    // Simulate adding employee
+    console.log("Added employee:", employee);
+    navigate('/dashboard/employee');
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
@@ -50,7 +28,7 @@ const AddEmployee = () => {
         <h3 className="text-center">Add Employee</h3>
         <form className="row g-1" onSubmit={handleSubmit}>
           <div className="col-12">
-            <label for="inputName" className="form-label">
+            <label htmlFor="inputName" className="form-label">
               Name
             </label>
             <input
@@ -64,7 +42,7 @@ const AddEmployee = () => {
             />
           </div>
           <div className="col-12">
-            <label for="inputEmail4" className="form-label">
+            <label htmlFor="inputEmail4" className="form-label">
               Email
             </label>
             <input
@@ -79,7 +57,7 @@ const AddEmployee = () => {
             />
           </div>
           <div className="col-12">
-            <label for="inputPassword4" className="form-label">
+            <label htmlFor="inputPassword4" className="form-label">
               Password
             </label>
             <input
@@ -93,13 +71,19 @@ const AddEmployee = () => {
             />
           </div>
           <div className="col-12">
-            <label for="category" className="form-label">
+            <label htmlFor="category" className="form-label">
               Category
             </label>
-            <select name="category" id="category" className="form-select"
-                onChange={(e) => setEmployee({...employee, category_id: e.target.value})}>
+            <select
+              name="category"
+              id="category"
+              className="form-select"
+              onChange={(e) =>
+                setEmployee({ ...employee, category_id: e.target.value })
+              }
+            >
               {category.map((c) => {
-                return <option value={c.id}>{c.name}</option>;
+                return <option key={c.id} value={c.id}>{c.name}</option>;
               })}
             </select>
           </div>
